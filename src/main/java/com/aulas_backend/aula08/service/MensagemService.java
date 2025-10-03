@@ -1,6 +1,6 @@
 package com.aulas_backend.aula08.service;
 
-import com.aulas_backend.aula08.Mensagem;
+import com.aulas_backend.aula08.models.Mensagem;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

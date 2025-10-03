@@ -1,4 +1,4 @@
-package com.aulas_backend.aula08;
+package com.aulas_backend.aula08.models;
 
 public class Mensagem {
     private String conteudo;
