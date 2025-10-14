@@ -10,10 +10,13 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(String nome, String email) {
+    public UsuarioDTO(UUID id, String nome, String email) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
     }
+
+
 
     public UUID getId() {
         return id;
