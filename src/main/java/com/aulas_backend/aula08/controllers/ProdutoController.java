@@ -1,8 +1,11 @@
 package com.aulas_backend.aula08.controllers;
 
 
+import com.aulas_backend.aula08.dto.ProdutoCreateDTO;
+import com.aulas_backend.aula08.dto.ProdutoDTO;
 import com.aulas_backend.aula08.models.Produto;
 import com.aulas_backend.aula08.service.ProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +23,27 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listar(){
-        List<Produto> produtos = produtoService.listarProdutos();
-        return ResponseEntity.ok(produtos);
+    public ResponseEntity<List<ProdutoDTO>> listar(){
+        return ResponseEntity.ok(produtoService.listarProdutos());
     }
 
     @PostMapping
-    public ResponseEntity<Produto> cadastrar(@RequestBody Produto produto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.cadastrarProduto(produto));
+    public ResponseEntity<ProdutoDTO> salvar(@Valid @RequestBody ProdutoCreateDTO dto) {
+        return ResponseEntity.ok(produtoService.salvar(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> listarUm(@PathVariable UUID id){
+    public ResponseEntity<ProdutoDTO> listarUm(@PathVariable UUID id){
         return ResponseEntity.ok(produtoService.listarUmProduto(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable UUID id, @RequestBody Produto produto){
-        return ResponseEntity.ok(produtoService.atualizarProduto(id, produto));
+    public ResponseEntity<ProdutoDTO> atualizar(@Valid @PathVariable UUID id, @RequestBody ProdutoCreateDTO dto){
+        return ResponseEntity.ok(produtoService.atualizarProduto(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Produto> deletar(@PathVariable UUID id){
+    public ResponseEntity<ProdutoDTO> deletar(@PathVariable UUID id){
         return ResponseEntity.ok(produtoService.deletarProduto(id));
     }
 
