@@ -1,7 +1,10 @@
 package com.aulas_backend.aula08.controllers;
 
+import com.aulas_backend.aula08.dto.ClienteCreateDTO;
+import com.aulas_backend.aula08.dto.ClienteDTO;
 import com.aulas_backend.aula08.models.Cliente;
 import com.aulas_backend.aula08.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,28 +20,27 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listar(){
-        List<Cliente> clientes = clienteService.listarClientes();
-        return ResponseEntity.ok(clientes);
+    public ResponseEntity<List<ClienteDTO>> listar(){
+        return ResponseEntity.ok(clienteService.listarClientes());
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente){
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.cadastrarCliente(cliente));
+    public ResponseEntity<ClienteDTO> cadastrar(@Valid @RequestBody ClienteCreateDTO dto){
+        return ResponseEntity.ok(clienteService.cadastrarCliente(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> listarUm(@PathVariable UUID id) {
+    public ResponseEntity<ClienteDTO> listarUm(@PathVariable UUID id) {
         return ResponseEntity.ok(clienteService.listarUmCliente(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable UUID id, @RequestBody Cliente cliente){
-        return ResponseEntity.ok(clienteService.atualizarCliente(id, cliente));
+    public ResponseEntity<ClienteDTO> atualizar(@Valid @PathVariable UUID id, @RequestBody ClienteCreateDTO dto){
+        return ResponseEntity.ok(clienteService.atualizarCliente(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cliente> deletar(@PathVariable UUID id){
+    public ResponseEntity<ClienteDTO> deletar(@PathVariable UUID id){
         return ResponseEntity.ok(clienteService.deletarCliente(id));
     }
 
