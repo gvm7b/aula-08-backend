@@ -7,6 +7,8 @@ import com.aulas_backend.aula08.repository.ClienteRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,6 +70,15 @@ public class ClienteService {
 
     public List<Cliente> listarPeloNome(String nome){
         return clienteRepository.findByNome(nome);
+    }
+
+    public Page<Cliente> listarPaginado(String nomeFiltro, Pageable pageable) {
+        if(nomeFiltro == null || nomeFiltro.isBlank()){
+            return clienteRepository.findAll(pageable);
+        }
+        return clienteRepository.findByNomeContainingIgnoreCase(nomeFiltro, pageable);
+
+
     }
 
 

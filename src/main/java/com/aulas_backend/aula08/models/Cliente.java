@@ -2,6 +2,8 @@ package com.aulas_backend.aula08.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +15,16 @@ public class Cliente {
     private UUID id;
     private String nome;
     private String email;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "clientes_produtos",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
+
+    private List<Produto> produtos = new ArrayList<>();
 
     public Cliente() {
     }

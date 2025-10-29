@@ -2,6 +2,8 @@ package com.aulas_backend.aula08.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +15,9 @@ public class Produto {
     private UUID id;
     private String nome;
     private float preco;
+
+    @ManyToMany(mappedBy = "produtos")
+    private List<Cliente> clientes = new ArrayList<>();
 
     public Produto() {
     }

@@ -6,7 +6,10 @@ import com.aulas_backend.aula08.models.Cliente;
 import com.aulas_backend.aula08.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/clientes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
@@ -47,5 +51,20 @@ public class ClienteController {
     @GetMapping("/nome")
     public ResponseEntity<List<Cliente>> buscarPeloNome(@RequestParam String nome){
         return ResponseEntity.ok(clienteService.listarPeloNome(nome));
+    }
+
+    @GetMapping("/paginado")
+    public Page<Cliente> listarPaginado(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String nomeFiltro
+    ){
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return clienteService.listarPaginado(nomeFiltro, pageable);
     }
 }
